@@ -14,7 +14,7 @@ contract WolfToken {
 
     // Array for user's balances
     mapping(address => uint256) public balanceOf;
-    mapping(address => mapping(address => uint256)) public allowance; // Nested mapping
+    mapping(address => mapping(address => uint256)) public allowance; // Nested mapping (ex: array[0][1])
     // Account 0 approves account 1 to spend 100 tokens
 
     //-----------------
