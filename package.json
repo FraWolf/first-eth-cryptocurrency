@@ -1,0 +1,32 @@
+{
+  "name": "eth-cryptocurrency",
+  "version": "1.0.0",
+  "description": "A simple ERC-20 Smart Contract",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "dev": "lite-server",
+    "compile": "truffle compile",
+    "migrate": "truffle migrate",
+    "console": "truffle console",
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FraWolf/first-eth-cryptocurrency.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "Cryptocurrency",
+    "Ethereum",
+    "SmartContract"
+  ],
+  "author": "FraWolf <frawolf@outlook.it> (https://frawolf.it)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FraWolf/first-eth-cryptocurrency/issues"
+  },
+  "homepage": "https://github.com/FraWolf/first-eth-cryptocurrency#readme"
+}
