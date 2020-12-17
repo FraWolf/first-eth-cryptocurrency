@@ -14,6 +14,8 @@ contract WolfToken {
 
     // Array for user's balances
     mapping(address => uint256) public balanceOf;
+    mapping(address => mapping(address => uint256)) public allowance; // Nested mapping
+    // Account 0 approves account 1 to spend 100 tokens
 
     //-----------------
     // Events
@@ -22,6 +24,12 @@ contract WolfToken {
     event Transfer(
         address indexed _from,
         address indexed _to,
+        uint256 _value
+    );
+
+    event Approval(
+        address indexed _owner,
+        address indexed _spender,
         uint256 _value
     );
 
@@ -62,6 +70,29 @@ contract WolfToken {
         return true;
 
     }
+
+    // Transfer from
+    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
+
+        //
+
+    }
+
+    // Approving transactions
+    function approve(address _spender, uint256 _value) public returns (bool success) {
+
+        // Allowance
+        allowance[msg.sender][_spender] = _value;
+
+        // Approval event
+        emit Approval(msg.sender, _spender, _value);
+
+        // Returns
+        return true;
+
+    }
+
+    // transferForm
 
 }
 
