@@ -2,7 +2,7 @@
   "name": "eth-cryptocurrency",
   "version": "1.0.0",
   "description": "A simple ERC-20 Smart Contract",
-  "main": "app.js",
+  "main": "truffle.js",
   "directories": {
     "test": "test"
   },
@@ -28,5 +28,8 @@
   "bugs": {
     "url": "https://github.com/FraWolf/first-eth-cryptocurrency/issues"
   },
-  "homepage": "https://github.com/FraWolf/first-eth-cryptocurrency#readme"
+  "homepage": "https://github.com/FraWolf/first-eth-cryptocurrency#readme",
+  "dependencies": {
+    "truffle-contract": "^4.0.31"
+  }
 }
