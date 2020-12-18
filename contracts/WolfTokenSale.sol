@@ -5,7 +5,7 @@ import "./WolfToken.sol";
 contract WolfTokenSale {
 
     // Define the admin address (not public to now show)
-    address admin;
+    address payable admin;
 
     // Variable that refer to our token
     WolfToken public tokenContract;
@@ -37,7 +37,7 @@ contract WolfTokenSale {
         tokenPrice = _tokenPrice;
     }
 
-    // multiply function
+    // Multiply function (SafeMath function)
     // internal: can be call internally on the contract only
     // pure: it says that it's only to calculate, not interaction with blockchain
     function multiply(uint x, uint y) internal pure returns (uint z) {
@@ -55,12 +55,27 @@ contract WolfTokenSale {
         require(tokenContract.balanceOf(thisContract) >= _numberOfTokens);
 
         // Require that transfer is successful
+        require(tokenContract.transfer(msg.sender, _numberOfTokens));
 
         // Keep track of number of tokens sold
         tokensSold += _numberOfTokens;
 
         // Trigger Sell Event
         emit Sell(msg.sender, _numberOfTokens);
+
+    }
+
+    // Ending Token WolfTokenSale
+    function endSale() public {
+
+        // Require that only admin can do this
+        require(msg.sender == admin);
+
+        // Transfer remaining WolfTokens to admin
+        require(tokenContract.transfer(admin, tokenContract.balanceOf(thisContract)));
+
+        // Destroy contract (edit: we are not going to destruct but simply transfer to admin)
+        admin.transfer(thisContract.balance);
 
     }
 

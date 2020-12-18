@@ -63,16 +63,22 @@ contract('WolfTokenSale', function(accounts) {
             return tokenSaleInstance.tokensSold();
         })
         .then(function(amount) {
-            assert.equal(amount.toNumber(), numberOfTokens);
+            assert.equal(amount.toNumber(), numberOfTokens, 'increments the number of tokens sold');
+            return tokenInstance.balanceOf(buyer);
+        })
+        .then(function(balance) {
+            assert.equal(balance.toNumber(), numberOfTokens);
+            return tokenInstance.balanceOf(tokenSaleInstance.address);
+        })
+        .then(function(balance) {
+            // Check if the TokenSale has the correct number of tokens (all tokens - the bought previously)
+            assert.equal(balance.toNumber(), (tokensAvailable - numberOfTokens));
             // Try to buy tokens different from the ether value
             return tokenSaleInstance.buyTokens(numberOfTokens, { from: buyer, value: 1 })
         })
         .then(assert.fail)
         .catch(function(error) {
             assert(error.message.indexOf('revert') >= 0, 'msg.value must equal number of tokens in wei');
-        })
-        .then(function(amount) {
-            assert.equal(amount.toNumber(), numberOfTokens);
             // Try to buy tokens different from the ether value
             return tokenSaleInstance.buyTokens(800000, { from: buyer, value: numberOfTokens * tokenPrice })
         })
@@ -81,5 +87,34 @@ contract('WolfTokenSale', function(accounts) {
             assert(error.message.indexOf('revert') >= 0, 'cannot purchase more tokens than available');
         })
     });
+
+    it('ends token sale', function() {
+        return WolfToken.deployed()
+        .then(function(instance) {
+            tokenInstance = instance;
+            return WolfTokenSale.deployed()
+        })
+        .then(function(instance) {
+            tokenSaleInstance = instance;
+            // Try to end from account other than admin
+            return tokenSaleInstance.endSale({ from: buyer });
+        })
+        .then(assert.fail)
+        .catch(function(error) {
+            assert(error.message.indexOf('revert' >= 0, 'must be admin to end the sale'));
+            // End sale as admin
+            return tokenSaleInstance.endSale({ from: admin });
+        })
+        .then(function(receipt) {
+            return tokenInstance.balanceOf(admin);
+        })
+        .then(function(balance) {
+            assert.equal(balance.toNumber(), 999990, 'returns all unsold WolfTokens to admin');
+            return web3.eth.getBalance(tokenSaleInstance.address);
+        })
+        .then(function(balance) {
+            assert.equal(balance, 0);
+        })
+    })
 
 });
