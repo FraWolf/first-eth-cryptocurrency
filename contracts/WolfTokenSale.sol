@@ -35,6 +35,7 @@ contract WolfTokenSale {
 
         // Token price (in WEI)
         tokenPrice = _tokenPrice;
+        
     }
 
     // Multiply function (SafeMath function)

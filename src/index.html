@@ -31,7 +31,7 @@
                             You currently have <b><span class="wolf-balance">0</span>&nbsp;WOLF</b>.
                         </p>
                         <br />
-                        <form role="form">
+                        <form role="form" onSubmit="App.buyTokens(); return false;">
                             <div class="form-group">
                                 <div class="input-group">
                                     <input id="numberOfToken" class="form-control input-lg" type="number" name="number" value="1" min="1" pattern="[0-9]">

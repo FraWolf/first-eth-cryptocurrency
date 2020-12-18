@@ -2,6 +2,8 @@ App = {
 
     loading: false,
     contracts: {},
+    account: '0x0',
+    tokensAvailable: 750000,
 
     load: async () => {
         console.log("App initialized...");
@@ -92,13 +94,41 @@ App = {
 
         const price = await (await App.WolfTokenSale.tokenPrice()).toNumber();
         const tokensSold = await (await App.WolfTokenSale.tokensSold()).toNumber();
+        //const tokensSold = 50000;
         const totalSupply = await (await App.WolfToken.totalSupply()).toNumber();
-        
-        $('.tokens-available').html(totalSupply);
+
+        // Progress bar
+        var progessPercent = (Math.ceil(tokensSold) / App.tokensAvailable) * 100;
+        console.log(progessPercent);
+
+        // Loads accounts informations
+        const userBalance = await (await App.WolfToken.balanceOf(App.account)).toNumber();
+
+        $('#progress').css('width', `${progessPercent}%`);
+        $('.tokens-available').html(App.tokensAvailable);
         $('.tokens-sold').html(tokensSold);
         $('.token-price').html(web3.fromWei(price, "ether"));
+        $('.wolf-balance').html(userBalance);
 
         App.setLoading(false);
+    },
+
+    buyTokens: async () => {
+
+        App.setLoading(true);
+
+        var numberOfTokens = $('#numberOfToken').val();
+
+        const price = await (await App.WolfTokenSale.tokenPrice()).toNumber();
+
+        let buyToken = await App.WolfTokenSale.buyTokens(numberOfTokens, {
+            from: App.account,
+            value: numberOfTokens * price,
+            gas: 500000
+        });
+        
+        window.location.reload();
+
     },
 
     setLoading: (boolean) => {
